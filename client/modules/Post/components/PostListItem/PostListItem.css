@@ -1,4 +1,7 @@
 .single-post {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 calc(33% - 1em);
   margin: 20px 0;
   padding: 15px;
   border-radius: 2px;
@@ -23,6 +26,7 @@
 }
 
 .post-desc{
+  flex: 1;
   font-size: 14px;
   color: #888;
   margin-bottom: 8px;
@@ -43,8 +47,7 @@
   border: 0;
   height: 1px;
   background: #ccc;
-  width: 250px;
-  margin: 32px auto 0;
+  margin: 32px 0 0;
 }
 
 .post-detail .post-title{
@@ -55,4 +58,16 @@
 .post-detail .post-desc{
   font-size: 16px;
   color: #555;
+}
+
+@media (max-width: 60em){
+  .single-post {
+    flex: 0 1 calc(50% - 1em);
+  }
+}
+
+@media (max-width: 40em){
+  .single-post {
+    flex: 0 1 calc(100% - 1em);
+  }
 }
