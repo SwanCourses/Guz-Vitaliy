@@ -1,4 +1,6 @@
 .header {
+  display: flex;
+  flex-direction: column;
   background: #eee url('../../header-bk.png') center;
   background-size: cover;
   border-bottom: 1px solid #ccc;
@@ -6,7 +8,7 @@
 
 .content {
   width: 100%;
-  max-width: 980px;
+  max-width: 1140px;
   margin: auto;
   padding: 64px 16px;
   overflow: auto;
@@ -34,12 +36,14 @@
 }
 
 .language-switcher {
+  display: flex;
   background: rgba(0, 0, 0, 0.1);
 }
 
 .language-switcher ul {
+  flex: 0 1 1140px;
+  justify-content: flex-end;
   list-style: none;
-  width: 980px;
   margin: auto;
   text-align: right;
 }
