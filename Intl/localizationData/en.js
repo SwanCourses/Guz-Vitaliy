@@ -1,7 +1,7 @@
 export default {
   locale: 'en',
   messages: {
-    siteTitle: 'MERN Starter Blog',
+    siteTitle: 'MERN First project',
     addPost: 'Add Post',
     switchLanguage: 'Switch Language',
     twitterMessage: 'We are on Twitter',
@@ -11,6 +11,13 @@ export default {
     authorName: 'Author\'s Name',
     postTitle: 'Post Title',
     postContent: 'Post Content',
+    createNewProduct: 'Create new product',
+    productName: 'Product title',
+    productCode: 'Product code',
+    productDescription: 'Product description',
+    productPrice: 'Price',
+    categoryName: 'Category',
+    createNewCategory: 'Create new category',
     submit: 'Submit',
     comment: `user {name} {value, plural,
     	  =0 {does not have any comments}

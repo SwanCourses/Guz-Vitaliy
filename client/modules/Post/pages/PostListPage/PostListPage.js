@@ -17,7 +17,7 @@ class PostListPage extends Component {
   componentDidMount() {
     this.props.dispatch(fetchPosts());
   }
-
+  
   handleDeletePost = post => {
     if (confirm('Do you want to delete this post')) { // eslint-disable-line
       this.props.dispatch(deletePostRequest(post));
