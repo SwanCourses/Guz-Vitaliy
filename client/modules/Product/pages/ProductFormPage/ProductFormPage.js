@@ -99,12 +99,15 @@ class ProductFormPage extends Component {
           <select multiple="multiple"
                   size="5"
                   name="sizes"
+                  className={styles['form-field']}
                   onChange={this.onSizesChange}>
             {sizes.map((size) =>
               <option key={size} value={size}>{size}</option>
             )}
           </select>
-          <ColorList colors={this.state.colors} onChange={this.changeColors}/>
+          <ColorList colors={this.state.colors}
+                     className={styles['form-field']}
+                     onChange={this.changeColors}/>
           <div className={styles.photos}>
             <input ref="photos"
                    type="file"

@@ -6,7 +6,9 @@
 }
 
 .form-content{
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   max-width: 600px;
   margin: auto;
   font-size: 14px;
@@ -20,8 +22,8 @@
 }
 
 .form-field{
-  width: 100%;
-  margin-bottom: 16px;
+  flex: 1;
+  margin: 16px;
   font-family: 'Lato', sans-serif;
   font-size: 16px;
   line-height: normal;
