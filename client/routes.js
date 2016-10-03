@@ -58,6 +58,14 @@ export default (
         });
       }}
       />
+      <Route
+        path="group/:group"
+        getComponent={(nextState, cb) => {
+        require.ensure([], require => {
+          cb(null, require('./modules/Product/pages/ProductListPage/ProductListPage').default);
+        });
+      }}
+      />
     </Route>
   </Route>
 );

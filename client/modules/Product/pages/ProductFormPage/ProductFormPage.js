@@ -13,7 +13,8 @@ import  styles from './ProductFormPage.css'
 
 import {ColorList} from '../../components/ColorList/ColorList';
 
-const sizes = ['XS', 'S', 'M', 'L', 'XL'];
+import {Sizes} from '../../../../../Common/Consts'; //const sizes = ['XS', 'S', 'M', 'L', 'XL'];
+import {Groups} from '../../../../../Common/Consts';
 
 class ProductFormPage extends Component {
   constructor(props) {
@@ -37,6 +38,17 @@ class ProductFormPage extends Component {
     this.setState({sizes: values});
   };
 
+  onGroupChange = (e) => {
+    let options = e.target.options
+    let value = '';
+    for (let i = 0, l = options.length; i < l; i++) {
+      if (options[i].selected) {
+        value = options[i].value;
+      }
+    }
+    this.setState({group: value});
+  };
+
   onChange = (e)=> {
     this.setState({[e.target.name]: e.target.value});
   };
@@ -48,6 +60,7 @@ class ProductFormPage extends Component {
     form.append('product[code]', this.state.code);
     form.append('product[price]', this.state.price);
     form.append('product[description]', this.state.description);
+    form.append('product[group]', this.state.group);
 
     for (let i = 0, size; size = this.state.sizes[i]; i++) {
       form.append('product[sizes]', size);
@@ -101,8 +114,15 @@ class ProductFormPage extends Component {
                   name="sizes"
                   className={styles['form-field']}
                   onChange={this.onSizesChange}>
-            {sizes.map((size) =>
+            {Sizes.map((size) =>
               <option key={size} value={size}>{size}</option>
+            )}
+          </select>
+          <select name="group"
+                  className={styles['form-field']}
+                  onChange={this.onGroupChange}>
+            {Groups.map((group) =>
+              <option key={group.url} value={group.name}>{group.name}</option>
             )}
           </select>
           <ColorList colors={this.state.colors}

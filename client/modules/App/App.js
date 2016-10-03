@@ -13,6 +13,8 @@ import Header from './components/Header/Header';
 import { toggleAddPost } from './AppActions';
 import { switchLanguage } from '../../modules/Intl/IntlActions';
 
+import GroupFilter from '../../components/GroupFilter/GroupFilter';
+
 export class App extends Component {
   constructor(props) {
     super(props);
@@ -54,6 +56,7 @@ export class App extends Component {
             toggleAddPost={this.toggleAddPostSection}
           />
           <div className={styles.container}>
+            <GroupFilter/>
             {this.props.children}
           </div>
         </div>

@@ -33,6 +33,7 @@ export function addProduct(req, res) {
     newProduct.code = sanitizeHtml(newProduct.code);
     newProduct.name = sanitizeHtml(newProduct.name);
     newProduct.description = sanitizeHtml(newProduct.description);
+    newProduct.group = sanitizeHtml(newProduct.group);
 
     newProduct.cuid = cuid();
 

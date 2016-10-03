@@ -46,10 +46,10 @@ class ProductListPage extends Component {
 }
 
 // Retrieve data from store as props
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
     searchQuery: state.products.searchQuery,
-    products: getProducts(state, state.products.searchQuery),
+    products: getProducts(state, state.products.searchQuery, props.params.group),
   };
 }
 
