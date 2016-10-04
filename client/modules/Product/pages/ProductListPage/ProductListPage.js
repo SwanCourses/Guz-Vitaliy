@@ -5,6 +5,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ProductListItem from '../../components/ProductListItem/ProductListItem';
+import { Link } from 'react-router';
 
 import styles from './ProductListPage.css';
 
@@ -12,7 +13,7 @@ import styles from './ProductListPage.css';
 import { getProducts } from '../../ProductReducer';
 import { setSearchQuery } from '../../ProductActions';
 
-class ProductListPage extends Component {
+class ProductListPage extends Component { 
   constructor(props) {
     super(props);
     this.state = { searchQuery: '' }
@@ -29,6 +30,8 @@ class ProductListPage extends Component {
           <input type="search" value={this.props.searchQuery} placeholder="Type name..."
                  onChange={e=>this.props.dispatch(setSearchQuery(e.target.value))}/>
         </div>
+
+        <Link to="/products/new">New product</Link>
 
         <div className={styles.products}>
           {
