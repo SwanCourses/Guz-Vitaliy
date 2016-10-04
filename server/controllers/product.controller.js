@@ -15,10 +15,12 @@ import sanitizeHtml from 'sanitize-html';
  */
 
 export function getProducts(req, res) {
-  Product.sort('name').exec().then((products) => {
-    res.json({products})
-  }).catch((err) => {
-    res.status(500).send(err);
+  Product.find().sort('name').exec((err, products) => {
+    if (err) {
+      res.status(500).send(err);
+    } else{
+      res.json({ products });
+    }
   });
 }
 
@@ -31,6 +33,7 @@ export function addProduct(req, res) {
     newProduct.code = sanitizeHtml(newProduct.code);
     newProduct.name = sanitizeHtml(newProduct.name);
     newProduct.description = sanitizeHtml(newProduct.description);
+    newProduct.group = sanitizeHtml(newProduct.group);
 
     newProduct.cuid = cuid();
 

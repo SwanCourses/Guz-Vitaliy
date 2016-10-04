@@ -8,19 +8,13 @@ import ColorListItem from './ColorListItem/ColorListItem'
 
 export class ColorList extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   onAddColor = () => {
     const colorNameRef = this.refs.color;
     if (colorNameRef.value) {
       //add color to state.colors if it is not contains one.
       //this.props.onChange(Array.from(new Set([...this.props.colors, colorNameRef.value])))
-      //var keys = [];
 
-      var nextIndex = Math.max(...Object.keys(this.props.colors || {})
+      var nextIndex = Math.max(...Object.keys(this.props.colors)
           .map(key => {
             return key.replace("color_", "")
           })) + 1;
@@ -29,9 +23,9 @@ export class ColorList extends Component {
     }
   }
 
-  onDeleteColor = (e) => {
+  onDeleteColor = (key) => {
     var obj = this.props.colors;
-    delete obj[e.target.dataset.color];
+    delete obj[key];
     this.props.onChange(obj);
     //this.props.onChange(this.props.colors.filter(color => color !== e.target.dataset.color))
   }
@@ -39,13 +33,12 @@ export class ColorList extends Component {
   render() {
     return (
       <div>
-        {Object.keys(this.props.colors || {}).map((key) => {
+        {Object.keys(this.props.colors).map((key) => {
           return (
             <ColorListItem
               key={key}
-              colorKey={key}
               colorName={this.props.colors[key]}
-              onDelete={this.onDeleteColor}
+              onDelete={this.onDeleteColor.bind(this, key)}
             />)
         })}
         <input ref="color" type="color"/>
@@ -56,8 +49,12 @@ export class ColorList extends Component {
 }
 
 ColorList.propTypes = {
-  colors: PropTypes.object.isRequired,
+  colors: PropTypes.object,
   onChange: PropTypes.func.isRequired
+};
+
+ColorList.defaultProps = {
+  colors: {}
 };
 
 export default ColorList;

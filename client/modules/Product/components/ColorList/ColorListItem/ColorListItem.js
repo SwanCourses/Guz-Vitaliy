@@ -9,7 +9,7 @@ function ColorListItem(props) {
   return (
     <div>
       <input type="color" value={color}/>
-      <button data-color={props.colorKey} onClick={props.onDelete}>Delete</button>
+      <button onClick={props.onDelete}>Delete</button>
     </div>
   );
 };
