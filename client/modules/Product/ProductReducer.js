@@ -40,14 +40,14 @@ const ProductReducer = (state = initialState, action) => {
 export const getProducts = (state, name = '', groupUrl = '') => {
   name = name.trim()
   /*return name === '' ? state.products.data : state.products.data.filter(product =>  `${product.name} ${product.price}`.indexOf(name) > -1)*/
-  var products = name === '' ? state.products.data : state.products.data.filter(product =>  `${product.name} ${product.price}`.indexOf(name) > -1)
+  var groupName = ''
   if (groupUrl !== '') {
     var findGroup = Groups.filter(group => group.url === groupUrl);
     if (findGroup.length > 0) {
-      products = products.filter(product => product.group === findGroup[0].name)
+      groupName = findGroup[0].name
     }
   }
-  return products;
+  return state.products.data.filter(product => (name === '' || `${product.name} ${product.price}`.indexOf(name) > -1) && (groupName === '' || product.group === groupName));
 };
 
 // Get product by cuid
