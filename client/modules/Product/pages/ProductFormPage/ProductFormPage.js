@@ -20,7 +20,10 @@ class ProductFormPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      colors: {'color_1': '#ffff00', 'color_2': '#00ffff'}
+      colors: {
+        'color_1': {'color': '#ffff00'},
+        'color_2': {'color': '#00ffff'}
+      }
     };
   }
 
@@ -67,12 +70,18 @@ class ProductFormPage extends Component {
     }
 
     Object.keys(this.state.colors).forEach((key) => {
-      form.append('product[colors][' + key + ']', this.state.colors[key]);
+      //Object.keys(this.state.colors[key]).forEach((colorKey) => {
+      form.append('product[colors][' + key + '][\'color\']', this.state.colors[key]['color']);
+      for (let i = 0, file; file = this.refs.photos.files[i]; i++) {
+        form.append('product[colors][' + key + '][photo]', file, file.name);
+      }
+      //})
     });
 
     for (let i = 0, file; file = this.refs.photos.files[i]; i++) {
       form.append('product[photo]', file, file.name);
     }
+
 
     this.props.dispatch(addProductRequest(form))
   };

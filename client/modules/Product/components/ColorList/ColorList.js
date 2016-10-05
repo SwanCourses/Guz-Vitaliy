@@ -14,12 +14,11 @@ export class ColorList extends Component {
       //add color to state.colors if it is not contains one.
       //this.props.onChange(Array.from(new Set([...this.props.colors, colorNameRef.value])))
 
-      var nextIndex = Math.max(...Object.keys(this.props.colors)
+      var nextIndex = Math.max(0, ...Object.keys(this.props.colors)
           .map(key => {
             return key.replace("color_", "")
           })) + 1;
-      this.props.onChange(Object.assign(this.props.colors, {["color_" + nextIndex]: colorNameRef.value}));
-      colorNameRef.value = '';
+      this.props.onChange(Object.assign(this.props.colors, {["color_" + nextIndex]: {color: colorNameRef.value}}));
     }
   }
 
@@ -37,7 +36,7 @@ export class ColorList extends Component {
           return (
             <ColorListItem
               key={key}
-              colorName={this.props.colors[key]}
+              colorName={this.props.colors[key]['color']}
               onDelete={this.onDeleteColor.bind(this, key)}
             />)
         })}
