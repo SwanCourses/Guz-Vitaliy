@@ -21,8 +21,14 @@ class ProductFormPage extends Component {
     super(props);
     this.state = {
       colors: {
-        'color_1': {'color': '#ffff00'},
-        'color_2': {'color': '#00ffff'}
+        color_1: {
+          color: '#ffff00',
+          photos: []
+        },
+        color_2: {
+          color: '#00ffff',
+          photos: []
+        }
       }
     };
   }
@@ -52,7 +58,7 @@ class ProductFormPage extends Component {
     this.setState({group: value});
   };
 
-  onChange = (e)=> {
+  onChange = (e) => {
     this.setState({[e.target.name]: e.target.value});
   };
 
@@ -71,17 +77,12 @@ class ProductFormPage extends Component {
 
     Object.keys(this.state.colors).forEach((key) => {
       //Object.keys(this.state.colors[key]).forEach((colorKey) => {
-      form.append('product[colors][' + key + '][\'color\']', this.state.colors[key]['color']);
-      for (let i = 0, file; file = this.refs.photos.files[i]; i++) {
-        form.append('product[colors][' + key + '][photo]', file, file.name);
+      form.append('product[colors][' + key + '][color]', this.state.colors[key].color);
+      for (let i = 0, file; file = this.state.colors[key].photos[i]; i++) {
+        form.append('product[colors][' + key + '][photos]', file, file.name);
       }
       //})
     });
-
-    for (let i = 0, file; file = this.refs.photos.files[i]; i++) {
-      form.append('product[photo]', file, file.name);
-    }
-
 
     this.props.dispatch(addProductRequest(form))
   };
@@ -137,12 +138,6 @@ class ProductFormPage extends Component {
           <ColorList colors={this.state.colors}
                      className={styles['form-field']}
                      onChange={this.changeColors}/>
-          <div className={styles.photos}>
-            <input ref="photos"
-                   type="file"
-                   multiple="multiple"
-                   onChange={this.onFileLoad}/>
-          </div>
           <a className={styles['post-submit-button']} href="#" onClick={this.addProduct}>
             <FormattedMessage id="submit"/>
           </a>

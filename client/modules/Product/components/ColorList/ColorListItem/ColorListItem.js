@@ -2,21 +2,27 @@
  * Created by Vitaliy on 28.09.2016.
  */
 
-import React, {PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 
-function ColorListItem(props) {
-  var color = props.colorName;
-  return (
-    <div>
-      <input type="color" value={color}/>
-      <button onClick={props.onDelete}>Delete</button>
-    </div>
-  );
-};
+export class ColorListItem extends Component {
+  render() {
+    return (
+      <div>
+        <input type="color" value={this.props.colorName} readOnly="true"/>
+        <button onClick={this.props.onDelete}>Delete</button>
+        <input ref="photos"
+               type="file"
+               multiple="multiple"
+               onChange={this.props.onFileLoad.bind(null, this)}/>
+      </div>
+    );
+  }
+}
 
 ColorListItem.propTypes = {
   colorName: PropTypes.string.isRequired,
+  onFileLoad: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired
-};
+}
 
 export default ColorListItem;

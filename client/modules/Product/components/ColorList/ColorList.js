@@ -23,10 +23,16 @@ export class ColorList extends Component {
   }
 
   onDeleteColor = (key) => {
-    var obj = this.props.colors;
-    delete obj[key];
-    this.props.onChange(obj);
+    var newColors = this.props.colors;
+    delete newColors[key];
+    this.props.onChange(newColors);
     //this.props.onChange(this.props.colors.filter(color => color !== e.target.dataset.color))
+  }
+
+  onFileLoad = (key, photos) => {
+    var newColors = this.props.colors;
+    newColors[key].photos = photos.refs.photos.files;
+    this.props.onChange(newColors);
   }
 
   render() {
@@ -38,6 +44,7 @@ export class ColorList extends Component {
               key={key}
               colorName={this.props.colors[key]['color']}
               onDelete={this.onDeleteColor.bind(this, key)}
+              onFileLoad={this.onFileLoad.bind(this, key)}
             />)
         })}
         <input ref="color" type="color"/>
