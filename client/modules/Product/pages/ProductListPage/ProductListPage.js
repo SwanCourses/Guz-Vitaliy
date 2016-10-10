@@ -13,18 +13,20 @@ import styles from './ProductListPage.css';
 import {getProducts} from '../../ProductReducer';
 import {getCategories} from '../../../Category/CategoryReducer';
 import {setSearchQuery} from '../../ProductActions';
+import {setGroup} from '../../ProductActions';
 import CategoriesBar from '../../../../components/CategoriesBar/CategoriesBar';
 
 class ProductListPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {searchQuery: ''}
+    this.state = {searchQuery: '', group: ''}
+    this.props.dispatch(setGroup(this.props.params.group));
   }
 
   componentDidMount() {
     this.setState({products: this.props.products});
   }
-
+  
   render() {
     return (
       <div className={styles.container}>
@@ -52,10 +54,12 @@ class ProductListPage extends Component {
 }
 
 // Retrieve data from store as props
-function mapStateToProps(state, props) {
+function mapStateToProps(state) {
+  //setGroup(props.params.group); call ProductReducer()?
   return {
     searchQuery: state.products.searchQuery,
-    products: getProducts(state, state.products.searchQuery, props.params.group),
+    group: state.products.group,
+    products: getProducts(state, state.products.searchQuery, state.products.group)
   };
 }
 

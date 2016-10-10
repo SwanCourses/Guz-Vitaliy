@@ -8,6 +8,8 @@ import { browserHistory } from 'react-router';
 export const ADD_PRODUCTS = 'ADD_PRODUCTS';
 export const ADD_PRODUCT = 'ADD_PRODUCT';
 export const SET_SEARCH_QUERY = 'SET_SEARCH_QUERY';
+export const SET_GROUP = 'SET_GROUP';
+
 
 export function addProducts(products) {
   return {
@@ -26,6 +28,13 @@ export function setSearchQuery(searchQuery) {
   return {
     type: SET_SEARCH_QUERY,
     searchQuery,
+  };
+}
+
+export function setGroup(groupUrl) {
+  return {
+    type: SET_GROUP,
+    groupUrl,
   };
 }
 

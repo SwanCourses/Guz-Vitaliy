@@ -2,11 +2,11 @@
  * Created by administrator on 26.09.16.
  */
 
-import { ADD_PRODUCT, ADD_PRODUCTS, SET_SEARCH_QUERY } from './ProductActions';
+import { ADD_PRODUCT, ADD_PRODUCTS, SET_SEARCH_QUERY, SET_GROUP } from './ProductActions';
 import { Groups } from '../../../Common/Consts';
 
 // Initial State
-const initialState = { data: [], searchQuery: '' };
+const initialState = { data: [], searchQuery: '', group: '' };
 
 const ProductReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -29,6 +29,12 @@ const ProductReducer = (state = initialState, action) => {
         searchQuery: action.searchQuery
       };
 
+    case SET_GROUP:
+      return {
+        ...state,
+        group: getGroupNameByUrl(action.groupUrl)
+      };
+
     default:
       return state;
   }
@@ -36,10 +42,7 @@ const ProductReducer = (state = initialState, action) => {
 
 /* Selectors */
 
-// Get all products
-export const getProducts = (state, name = '', groupUrl = '') => {
-  name = name.trim()
-  /*return name === '' ? state.products.data : state.products.data.filter(product =>  `${product.name} ${product.price}`.indexOf(name) > -1)*/
+export const getGroupNameByUrl = (groupUrl) =>{
   var groupName = ''
   if (groupUrl !== '') {
     var findGroup = Groups.filter(group => group.url === groupUrl);
@@ -47,7 +50,16 @@ export const getProducts = (state, name = '', groupUrl = '') => {
       groupName = findGroup[0].name
     }
   }
-  return state.products.data.filter(product => (name === '' || `${product.name} ${product.price}`.indexOf(name) > -1) && (groupName === '' || product.group === groupName));
+  return groupName
+}
+
+// Get all products
+export const getProducts = (state, name = '', group = '', category = '') => {
+  name = name.trim()
+  return state.products.data.filter(product =>
+    (name === '' || `${product.name} ${product.price}`.indexOf(name) > -1) &&
+    (group === '' || product.group === group)
+  );
 };
 
 // Get product by cuid
