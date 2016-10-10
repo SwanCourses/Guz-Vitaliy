@@ -8,6 +8,7 @@ import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
 
 import {addProductRequest}from '../../ProductActions';
+import {getCategories} from '../../../Category/CategoryReducer';
 
 import  styles from './ProductFormPage.css'
 
@@ -58,6 +59,17 @@ class ProductFormPage extends Component {
     this.setState({group: value});
   };
 
+  onCategoryChange = (e) => {
+    let options = e.target.options
+    let value = '';
+    for (let i = 0, l = options.length; i < l; i++) {
+      if (options[i].selected) {
+        value = options[i].value;
+      }
+    }
+    this.setState({category: value});
+  };
+
   onChange = (e) => {
     this.setState({[e.target.name]: e.target.value});
   };
@@ -70,6 +82,7 @@ class ProductFormPage extends Component {
     form.append('product[price]', this.state.price);
     form.append('product[description]', this.state.description);
     form.append('product[group]', this.state.group);
+    form.append('product[category]', this.state.category);
 
     for (let i = 0, size; size = this.state.sizes[i]; i++) {
       form.append('product[sizes]', size);
@@ -131,8 +144,16 @@ class ProductFormPage extends Component {
           <select name="group"
                   className={styles['form-field']}
                   onChange={this.onGroupChange}>
-            {Groups.map((group) =>
+            {Groups.map(group =>
               <option key={group.url} value={group.name}>{group.name}</option>
+            )}
+          </select>
+          <select name="category"
+                  className={styles['form-field']}
+                  value={this.state.category}
+                  onChange={this.onCategoryChange}>
+            {this.props.categories.map(category =>
+              <option key={category.cuid} value={category.cuid}>{category.name}</option>
             )}
           </select>
           <ColorList colors={this.state.colors}
@@ -151,8 +172,10 @@ ProductFormPage.propTypes = {
   intl: intlShape.isRequired,
 };
 
-function mapStateToProps(state, props) {
-  return {};
+function mapStateToProps(state) {
+  return {
+    categories: getCategories(state)
+  };
 }
 
 export default connect(mapStateToProps)(injectIntl(ProductFormPage));

@@ -14,6 +14,7 @@ import {getProducts} from '../../ProductReducer';
 import {getCategories} from '../../../Category/CategoryReducer';
 import {setSearchQuery} from '../../ProductActions';
 import {setGroup} from '../../ProductActions';
+import {getCategoriesByProducts} from '../../../Category/CategoryReducer';
 import CategoriesBar from '../../../../components/CategoriesBar/CategoriesBar';
 
 class ProductListPage extends Component {
@@ -26,7 +27,7 @@ class ProductListPage extends Component {
   componentDidMount() {
     this.setState({products: this.props.products});
   }
-  
+
   render() {
     return (
       <div className={styles.container}>
@@ -55,11 +56,12 @@ class ProductListPage extends Component {
 
 // Retrieve data from store as props
 function mapStateToProps(state) {
-  //setGroup(props.params.group); call ProductReducer()?
+  var products = getProducts(state, state.products.searchQuery, state.products.group)
   return {
     searchQuery: state.products.searchQuery,
     group: state.products.group,
-    products: getProducts(state, state.products.searchQuery, state.products.group)
+    categories: getCategoriesByProducts(state, products),
+    products: products
   };
 }
 
