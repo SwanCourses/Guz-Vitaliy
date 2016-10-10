@@ -2,25 +2,27 @@
  * Created by Vitaliy on 30.09.2016.
  */
 
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import ProductListItem from '../../components/ProductListItem/ProductListItem';
-import { Link } from 'react-router';
+import {Link} from 'react-router';
 
 import styles from './ProductListPage.css';
 
 // Import Selectors
-import { getProducts } from '../../ProductReducer';
-import { setSearchQuery } from '../../ProductActions';
+import {getProducts} from '../../ProductReducer';
+import {getCategories} from '../../../Category/CategoryReducer';
+import {setSearchQuery} from '../../ProductActions';
+import CategoriesBar from '../../../../components/CategoriesBar/CategoriesBar';
 
-class ProductListPage extends Component { 
+class ProductListPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { searchQuery: '' }
+    this.state = {searchQuery: ''}
   }
 
   componentDidMount() {
-    this.setState({ products: this.props.products });
+    this.setState({products: this.props.products});
   }
 
   render() {
@@ -29,6 +31,7 @@ class ProductListPage extends Component {
         <div className={styles['filter-panel']}>
           <input type="search" value={this.props.searchQuery} placeholder="Type name..."
                  onChange={e=>this.props.dispatch(setSearchQuery(e.target.value))}/>
+          <CategoriesBar {...this.props} onSelect={cuid=>alert(cuid)}/>
         </div>
 
         <Link to="/products/new">New product</Link>
