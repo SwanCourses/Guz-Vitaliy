@@ -17,26 +17,27 @@ const app = new Express();
 // Run Webpack dev server in development mode
 if (process.env.NODE_ENV === 'development') {
   const compiler = webpack(config);
-  app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));
+  app.use(webpackDevMiddleware(compiler, {noInfo: true, publicPath: config.output.publicPath}));
   app.use(webpackHotMiddleware(compiler));
 }
 
 // React And Redux Setup
-import { configureStore } from '../client/store';
-import { Provider } from 'react-redux';
+import {configureStore} from '../client/store';
+import {Provider} from 'react-redux';
 import React from 'react';
-import { renderToString } from 'react-dom/server';
-import { match, RouterContext } from 'react-router';
+import {renderToString} from 'react-dom/server';
+import {match, RouterContext} from 'react-router';
 import Helmet from 'react-helmet';
 
 // Import required modules
 import routes from '../client/routes';
-import { fetchComponentData } from './util/fetchData';
+import {fetchComponentData} from './util/fetchData';
 import posts from './routes/post.routes';
 import products from './routes/product.routes';
+import categories from './routes/category.routes';
 import dummyData from './dummyData';
 import serverConfig from './config';
-import { createDir } from  './util/fs-helpers';
+import {createDir} from  './util/fs-helpers';
 
 // Set native promises as mongoose promise
 mongoose.Promise = global.Promise;
@@ -56,12 +57,13 @@ createDir(path.resolve(__dirname, '../' + serverConfig.UPLOADS_DIR));
 
 // Apply body Parser and server public assets and routes
 app.use(compression());
-app.use(bodyParser.json({ limit: '20mb' }));
-app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
+app.use(bodyParser.json({limit: '20mb'}));
+app.use(bodyParser.urlencoded({limit: '20mb', extended: false}));
 app.use(Express.static(path.resolve(__dirname, '../dist')));
 app.use('/uploads', Express.static(path.resolve(__dirname, '../uploads')));
 app.use('/api', posts);
 app.use('/api', products);
+app.use('/api', categories);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
@@ -90,7 +92,7 @@ const renderFullPage = (html, initialState) => {
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
           ${process.env.NODE_ENV === 'production' ?
-          `//<![CDATA[
+    `//<![CDATA[
           window.webpackManifest = ${JSON.stringify(chunkManifest)};
           //]]>` : ''}
         </script>
@@ -110,7 +112,7 @@ const renderError = err => {
 
 // Server Side Rendering based on routes matched by React-router.
 app.use((req, res, next) => {
-  match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
+  match({routes, location: req.url}, (err, redirectLocation, renderProps) => {
     if (err) {
       return res.status(500).end(renderError(err));
     }

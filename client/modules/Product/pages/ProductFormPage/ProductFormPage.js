@@ -8,6 +8,7 @@ import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
 
 import {addProductRequest}from '../../ProductActions';
+import {getCategories} from '../../../Category/CategoryReducer';
 
 import  styles from './ProductFormPage.css'
 
@@ -20,7 +21,16 @@ class ProductFormPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      colors: {'color_1': '#ffff00', 'color_2': '#00ffff'}
+      colors: {
+        color_1: {
+          color: '#ffff00',
+          photos: []
+        },
+        color_2: {
+          color: '#00ffff',
+          photos: []
+        }
+      }
     };
   }
 
@@ -49,7 +59,18 @@ class ProductFormPage extends Component {
     this.setState({group: value});
   };
 
-  onChange = (e)=> {
+  onCategoryChange = (e) => {
+    let options = e.target.options
+    let value = '';
+    for (let i = 0, l = options.length; i < l; i++) {
+      if (options[i].selected) {
+        value = options[i].value;
+      }
+    }
+    this.setState({category: value});
+  };
+
+  onChange = (e) => {
     this.setState({[e.target.name]: e.target.value});
   };
 
@@ -61,18 +82,20 @@ class ProductFormPage extends Component {
     form.append('product[price]', this.state.price);
     form.append('product[description]', this.state.description);
     form.append('product[group]', this.state.group);
+    form.append('product[category]', this.state.category);
 
     for (let i = 0, size; size = this.state.sizes[i]; i++) {
       form.append('product[sizes]', size);
     }
 
     Object.keys(this.state.colors).forEach((key) => {
-      form.append('product[colors][' + key + ']', this.state.colors[key]);
+      //Object.keys(this.state.colors[key]).forEach((colorKey) => {
+      form.append('product[colors][' + key + '][color]', this.state.colors[key].color);
+      for (let i = 0, file; file = this.state.colors[key].photos[i]; i++) {
+        form.append('product[colors][' + key + '][photos]', file, file.name);
+      }
+      //})
     });
-
-    for (let i = 0, file; file = this.refs.photos.files[i]; i++) {
-      form.append('product[photo]', file, file.name);
-    }
 
     this.props.dispatch(addProductRequest(form))
   };
@@ -121,19 +144,21 @@ class ProductFormPage extends Component {
           <select name="group"
                   className={styles['form-field']}
                   onChange={this.onGroupChange}>
-            {Groups.map((group) =>
+            {Groups.map(group =>
               <option key={group.url} value={group.name}>{group.name}</option>
+            )}
+          </select>
+          <select name="category"
+                  className={styles['form-field']}
+                  value={this.state.category}
+                  onChange={this.onCategoryChange}>
+            {this.props.categories.map(category =>
+              <option key={category.cuid} value={category.cuid}>{category.name}</option>
             )}
           </select>
           <ColorList colors={this.state.colors}
                      className={styles['form-field']}
                      onChange={this.changeColors}/>
-          <div className={styles.photos}>
-            <input ref="photos"
-                   type="file"
-                   multiple="multiple"
-                   onChange={this.onFileLoad}/>
-          </div>
           <a className={styles['post-submit-button']} href="#" onClick={this.addProduct}>
             <FormattedMessage id="submit"/>
           </a>
@@ -147,8 +172,10 @@ ProductFormPage.propTypes = {
   intl: intlShape.isRequired,
 };
 
-function mapStateToProps(state, props) {
-  return {};
+function mapStateToProps(state) {
+  return {
+    categories: getCategories(state)
+  };
 }
 
 export default connect(mapStateToProps)(injectIntl(ProductFormPage));

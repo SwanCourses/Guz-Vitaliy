@@ -14,20 +14,25 @@ export class ColorList extends Component {
       //add color to state.colors if it is not contains one.
       //this.props.onChange(Array.from(new Set([...this.props.colors, colorNameRef.value])))
 
-      var nextIndex = Math.max(...Object.keys(this.props.colors)
+      var nextIndex = Math.max(0, ...Object.keys(this.props.colors)
           .map(key => {
             return key.replace("color_", "")
           })) + 1;
-      this.props.onChange(Object.assign(this.props.colors, {["color_" + nextIndex]: colorNameRef.value}));
-      colorNameRef.value = '';
+      this.props.onChange(Object.assign(this.props.colors, {["color_" + nextIndex]: {color: colorNameRef.value}}));
     }
   }
 
   onDeleteColor = (key) => {
-    var obj = this.props.colors;
-    delete obj[key];
-    this.props.onChange(obj);
+    var newColors = this.props.colors;
+    delete newColors[key];
+    this.props.onChange(newColors);
     //this.props.onChange(this.props.colors.filter(color => color !== e.target.dataset.color))
+  }
+
+  onFileLoad = (key, photos) => {
+    var newColors = this.props.colors;
+    newColors[key].photos = photos.refs.photos.files;
+    this.props.onChange(newColors);
   }
 
   render() {
@@ -37,8 +42,9 @@ export class ColorList extends Component {
           return (
             <ColorListItem
               key={key}
-              colorName={this.props.colors[key]}
+              colorName={this.props.colors[key]['color']}
               onDelete={this.onDeleteColor.bind(this, key)}
+              onFileLoad={this.onFileLoad.bind(this, key)}
             />)
         })}
         <input ref="color" type="color"/>

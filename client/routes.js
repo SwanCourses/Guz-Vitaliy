@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route, IndexRoute, Redirect } from 'react-router';
 import App from './modules/App/App';
 import Product from './modules/Product/Product';
 
@@ -27,6 +27,7 @@ if (process.env.NODE_ENV !== 'production') {
 // More info: http://blog.mxstbr.com/2016/01/react-apps-with-pages/
 export default (
   <Route path="/" component={App}>
+    <Redirect from="/" to="/products" />
     <IndexRoute
       getComponent={(nextState, cb) => {
         require.ensure([], require => {
@@ -39,6 +40,14 @@ export default (
       getComponent={(nextState, cb) => {
         require.ensure([], require => {
           cb(null, require('./modules/Post/pages/PostDetailPage/PostDetailPage').default);
+        });
+      }}
+    />
+    <Route
+      path="/categories/new"
+      getComponent={(nextState, cb) => {
+        require.ensure([], require => {
+          cb(null, require('./modules/Category/pages/CategoryFormPage/CategoryFormPage').default);
         });
       }}
     />

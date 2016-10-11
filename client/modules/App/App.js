@@ -1,5 +1,5 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
 
 // Import Style
 import styles from './App.css';
@@ -10,18 +10,20 @@ import Helmet from 'react-helmet';
 import Header from './components/Header/Header';
 
 // Import Actions
-import { toggleAddPost } from './AppActions';
-import { switchLanguage } from '../../modules/Intl/IntlActions';
+import {toggleAddPost} from './AppActions';
+import {fetchCategories} from '../Category/CategoryActions';
+import {switchLanguage} from '../../modules/Intl/IntlActions';
 
 import GroupFilter from '../../components/GroupFilter/GroupFilter';
 
 export class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { isMounted: false };
+    this.state = {isMounted: false};
   }
 
   componentDidMount() {
+    this.props.dispatch(fetchCategories());
     this.setState({isMounted: true}); // eslint-disable-line
   }
 
