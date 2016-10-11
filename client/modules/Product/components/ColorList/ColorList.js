@@ -31,7 +31,7 @@ export class ColorList extends Component {
 
   onFileLoad = (key, photos) => {
     var newColors = this.props.colors;
-    newColors[key].photos = photos.refs.photos.files;
+    newColors[key].photos = photos;
     this.props.onChange(newColors);
   }
 
