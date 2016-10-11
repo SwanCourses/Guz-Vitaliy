@@ -32,12 +32,17 @@ class ProductListPage extends Component {
     return (
       <div className={styles.container}>
         <div className={styles['filter-panel']}>
-          <input type="search" value={this.props.searchQuery} placeholder="Type name..."
+          <input type="search"
+                 className={styles['search']}
+                 value={this.props.searchQuery} 
+                 placeholder="Type name..."
                  onChange={e=>this.props.dispatch(setSearchQuery(e.target.value))}/>
           <CategoriesBar {...this.props} onSelect={cuid=>alert(cuid)}/>
         </div>
 
-        <Link to="/products/new">New product</Link>
+        <div className={styles['new-product']}>
+          <Link to="/products/new" ></Link>
+        </div>
 
         <div className={styles.products}>
           {

@@ -1,9 +1,15 @@
 .container {
+  display: flex;
   cursor: pointer;
-  width: 250px;
+}
+
+.container a {
+  display: flex;
+  flex-direction: column;
 }
 
 .container .picture {
+  flex: 1;
   width: 100%;
   background-size: contain;
   background-position: center;
