@@ -20,6 +20,8 @@ export default {
     createNewCategory: 'Создать новую категорию',
     submit: 'Подтвердить',
     edit: 'Редактировать',
+    cart: 'Корзина', 
+    order: 'Заказать',
     comment: `У пользователя {name} {value, plural,
     	  =0 {does not have any comments}
     	  =1 {has # comment}
