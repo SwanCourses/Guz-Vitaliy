@@ -64,6 +64,7 @@ export function updateProduct(req, res) {
         document.name = sanitizeHtml(req.body.product.name);
         document.description = sanitizeHtml(req.body.product.description);
         document.price = req.body.product.price;
+        document.inactive = req.body.product.inactive;
 
         for (let i = 0, file; file = req.files[i]; i++) {
           document.photos.push({ fileName: file.filename })

@@ -22,7 +22,7 @@ class ProductFormPage extends Component {
 
   constructor(props) {
     super(props);
-    this.state = props.product || {}
+    this.state = props.product || {inactive: false}
   }
 
 
@@ -88,6 +88,8 @@ class ProductFormPage extends Component {
       }
       //})
     });
+
+    form.append('product[inactive]', this.state.inactive);
 
     this.props.dispatch(!this.props.product ? addProductRequest(form) : updateProductRequest(this.props.product.cuid, form))
   };

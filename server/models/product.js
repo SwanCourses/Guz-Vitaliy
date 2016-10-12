@@ -13,6 +13,7 @@ const productSchema = new Schema({
   price: { type: 'Number', required: true },
   group: { type: 'String', required: true },
   category: { type: 'String', required: true },
+  inactive: {type: 'Boolean', default: false},
   colors: {},
   sizes: [],
   photos: [],

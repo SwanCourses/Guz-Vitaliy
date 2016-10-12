@@ -63,6 +63,7 @@ export const getGroupNameByUrl = (groupUrl) => {
 export const getProducts = (state, name = '', group = '', category = '') => {
   name = name.trim()
   return state.products.data.filter(product =>
+    !product.inactive &&
     (name === '' || `${product.name} ${product.price}`.indexOf(name) > -1) &&
     (group === '' || product.group === group)
   );
