@@ -2,11 +2,11 @@
  * Created by administrator on 26.09.16.
  */
 
-import { ADD_PRODUCT, ADD_PRODUCTS, SET_SEARCH_QUERY, SET_GROUP } from './ProductActions';
-import { Groups } from '../../../Common/Consts';
+import {ADD_PRODUCT, ADD_PRODUCTS, SET_SEARCH_QUERY, SET_GROUP, REPLACE_PRODUCT} from './ProductActions';
+import {Groups} from '../../../Common/Consts';
 
 // Initial State
-const initialState = { data: [], searchQuery: '', group: '' };
+const initialState = {data: [], searchQuery: '', group: ''};
 
 const ProductReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -35,6 +35,12 @@ const ProductReducer = (state = initialState, action) => {
         group: getGroupNameByUrl(action.groupUrl)
       };
 
+    case REPLACE_PRODUCT:
+      return {
+        ...state,
+        data: state.data.map(obj => action.product.cuid === obj.cuid ? action.product : obj)
+      };
+
     default:
       return state;
   }
@@ -42,7 +48,7 @@ const ProductReducer = (state = initialState, action) => {
 
 /* Selectors */
 
-export const getGroupNameByUrl = (groupUrl) =>{
+export const getGroupNameByUrl = (groupUrl) => {
   var groupName = ''
   if (groupUrl !== '') {
     var findGroup = Groups.filter(group => group.url === groupUrl);

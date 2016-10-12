@@ -2,12 +2,13 @@
  * Created by administrator on 26.09.16.
  */
 
-import callApi, { callApiForm } from '../../util/apiCaller';
-import { browserHistory } from 'react-router';
+import callApi, {callApiForm} from '../../util/apiCaller';
+import {browserHistory} from 'react-router';
 
 export const ADD_PRODUCTS = 'ADD_PRODUCTS';
 export const ADD_PRODUCT = 'ADD_PRODUCT';
 export const SET_SEARCH_QUERY = 'SET_SEARCH_QUERY';
+export const REPLACE_PRODUCT = 'REPLACE_PRODUCT';
 export const SET_GROUP = 'SET_GROUP';
 
 
@@ -31,6 +32,13 @@ export function setSearchQuery(searchQuery) {
   };
 }
 
+export function replaceProduct(product) {
+  return {
+    type: REPLACE_PRODUCT,
+    product,
+  };
+}
+
 export function setGroup(groupUrl) {
   return {
     type: SET_GROUP,
@@ -42,7 +50,7 @@ export function addProductRequest(form) {
   return (dispatch) => {
     return callApiForm('products', 'post', form).then(res => {
       dispatch(addProduct(res.product))
-      browserHistory.push('/products/'+res.product.cuid)
+      browserHistory.push('/products/' + res.product.cuid)
     });
   };
 }
@@ -55,3 +63,13 @@ export function fetchProducts() {
     });
   };
 }
+
+export function updateProductRequest(cuid, form) {
+  return (dispatch) => {
+    return callApiForm('products/' + cuid, 'put', form).then(res => {
+      dispatch(replaceProduct(res.product));
+      browserHistory.push('/products/' + res.product.cuid)
+    });
+  };
+}
+

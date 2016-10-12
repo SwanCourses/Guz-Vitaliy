@@ -7,8 +7,9 @@ import React, {Component} from 'react'
 import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
 
-import {addProductRequest}from '../../ProductActions';
+import {addProductRequest, updateProductRequest}from '../../ProductActions';
 import {getCategories} from '../../../Category/CategoryReducer';
+import {getProduct} from '../../ProductReducer';
 
 import  styles from './ProductFormPage.css'
 
@@ -18,21 +19,12 @@ import {Sizes} from '../../../../../Common/Consts'; //const sizes = ['XS', 'S', 
 import {Groups} from '../../../../../Common/Consts';
 
 class ProductFormPage extends Component {
+
   constructor(props) {
     super(props);
-    this.state = {
-      colors: {
-        color_1: {
-          color: '#ffff00',
-          photos: []
-        },
-        color_2: {
-          color: '#00ffff',
-          photos: []
-        }
-      }
-    };
+    this.state = props.product || {}
   }
+
 
   onSizesChange = (e) => {
     let options = e.target.options
@@ -74,7 +66,7 @@ class ProductFormPage extends Component {
     this.setState({[e.target.name]: e.target.value});
   };
 
-  addProduct = ()=> {
+  addProduct = () => {
 
     let form = new FormData();
     form.append('product[name]', this.state.name);
@@ -97,7 +89,7 @@ class ProductFormPage extends Component {
       //})
     });
 
-    this.props.dispatch(addProductRequest(form))
+    this.props.dispatch(!this.props.product ? addProductRequest(form) : updateProductRequest(this.props.product.cuid, form))
   };
 
   changeColors = (newColors) => {
@@ -105,6 +97,14 @@ class ProductFormPage extends Component {
       colors: newColors
     });
   }
+
+  isEdit = () => {
+    return !!this.props.product
+  };
+
+  inactiveChange = (e) => {
+    this.setState({inactive: e.target.value});
+  };
 
   render() {
     return (
@@ -120,7 +120,8 @@ class ProductFormPage extends Component {
                  value={this.state.code}
                  onChange={this.onChange}
                  className={styles['form-field']}
-                 name="code"/>
+                 name="code"
+                 disabled={this.isEdit()}/>
           <input placeholder={this.props.intl.messages.productPrice}
                  value={this.state.price}
                  onChange={this.onChange}
@@ -132,6 +133,10 @@ class ProductFormPage extends Component {
                     onChange={this.onChange}
                     className={styles['form-field']}
                     name="description"/>
+          <label>Inactive</label>
+          <input type="checkbox"
+                 checked={this.state.inactive}
+                 onChange={this.inactiveChange}/>
           <select multiple="multiple"
                   size="5"
                   name="sizes"
@@ -159,9 +164,9 @@ class ProductFormPage extends Component {
           <ColorList colors={this.state.colors}
                      className={styles['form-field']}
                      onChange={this.changeColors}/>
-          <a className={styles['post-submit-button']} href="#" onClick={this.addProduct}>
-            <FormattedMessage id="submit"/>
-          </a>
+          <div className={styles['post-submit-button']} onClick={this.addProduct}>
+            <FormattedMessage id={this.isEdit() ? 'edit' : 'submit'}/>
+          </div>
         </div>
       </div>
     )
@@ -172,9 +177,10 @@ ProductFormPage.propTypes = {
   intl: intlShape.isRequired,
 };
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
-    categories: getCategories(state)
+    categories: getCategories(state),
+    product: getProduct(state, props.params.cuid)
   };
 }
 

@@ -8,6 +8,11 @@ import ColorListItem from './ColorListItem/ColorListItem'
 
 export class ColorList extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = props.colors || {}
+  }
+
   onAddColor = () => {
     const colorNameRef = this.refs.color;
     if (colorNameRef.value) {
