@@ -8,6 +8,11 @@ import ColorListItem from './ColorListItem/ColorListItem'
 
 export class ColorList extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = props.colors || {}
+  }
+
   onAddColor = () => {
     const colorNameRef = this.refs.color;
     if (colorNameRef.value) {
@@ -31,7 +36,7 @@ export class ColorList extends Component {
 
   onFileLoad = (key, photos) => {
     var newColors = this.props.colors;
-    newColors[key].photos = photos.refs.photos.files;
+    newColors[key].photos = photos;
     this.props.onChange(newColors);
   }
 

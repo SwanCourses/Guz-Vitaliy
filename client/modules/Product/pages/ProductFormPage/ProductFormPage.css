@@ -51,3 +51,23 @@ textarea {
 .colors{
 
 }
+
+.photos {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: row wrap;
+}
+
+.photos .picture {
+  width: 300px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+
+}
+
+.photos .picture img {
+  height: auto;
+  max-width: 100%;
+}

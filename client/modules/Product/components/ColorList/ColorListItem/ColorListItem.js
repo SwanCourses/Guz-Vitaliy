@@ -5,6 +5,10 @@
 import React, {Component, PropTypes} from 'react';
 
 export class ColorListItem extends Component {
+  onFilesChange = () =>{
+    this.props.onFileLoad(this.refs.photos.files);
+  }
+
   render() {
     return (
       <div>
@@ -13,7 +17,7 @@ export class ColorListItem extends Component {
         <input ref="photos"
                type="file"
                multiple="multiple"
-               onChange={this.props.onFileLoad.bind(null, this)}/>
+               onChange={this.onFilesChange}/>
       </div>
     );
   }

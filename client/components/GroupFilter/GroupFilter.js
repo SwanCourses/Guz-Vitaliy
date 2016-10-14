@@ -8,6 +8,8 @@ import {Groups} from '../../../Common/Consts'
 import {Link} from 'react-router'
 import {setGroup} from '../../modules/Product/ProductActions'
 
+import styles from './GroupFilter.css';
+
 class GroupFilter extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +22,11 @@ class GroupFilter extends Component {
 
   render() {
     return (
-      <div>
+      <div className={styles['groups-list']}>
+        <Link to={`/products`}
+              onClick={this.onChangeGroup.bind(null, '')}>
+          All
+        </Link>
         {Groups.map((group) =>
           <Link to={`/products/group/${group.url}`}
                 key={group.url}

@@ -1,0 +1,18 @@
+.groups-list {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  height: 2em;
+}
+
+.groups-list a {
+  flex: 1;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.groups-list a:hover {
+  background-color: #7f7f7f;
+  opacity: 1;
+  color: white;
+}

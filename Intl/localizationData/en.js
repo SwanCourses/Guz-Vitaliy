@@ -19,6 +19,7 @@ export default {
     categoryName: 'Category',
     createNewCategory: 'Create new category',
     submit: 'Submit',
+    edit: 'Edit',
     comment: `user {name} {value, plural,
     	  =0 {does not have any comments}
     	  =1 {has # comment}

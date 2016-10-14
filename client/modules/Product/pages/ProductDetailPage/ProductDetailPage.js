@@ -3,6 +3,7 @@
  */
 
 import React, {PropTypes, Component} from 'react';
+import { Link } from 'react-router';
 import color from 'color';
 import {connect} from 'react-redux';
 import Helmet from 'react-helmet';
@@ -62,6 +63,7 @@ export class ProductDetailPage extends Component {
                   </div>
                 );
               })}
+            <Link to={`/products/${this.props.product.cuid}/edit`}><FormattedMessage id="edit"/></Link>
           </div>
         </div>
       </div>
