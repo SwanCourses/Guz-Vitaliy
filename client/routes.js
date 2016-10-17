@@ -5,6 +5,7 @@ import App from './modules/App/App';
 import Product from './modules/Product/Product';
 
 import {isAdmin} from './util/apiCaller';
+import {isLoggedIn} from './util/apiCaller';
 
 // require.ensure polyfill for node
 if (typeof require.ensure !== 'function') {
@@ -15,6 +16,11 @@ if (typeof require.ensure !== 'function') {
 
 function requireAdmin(nextState, replace) {
   if (!isAdmin())
+    replace('/sign_in')
+}
+
+function requireLoggedIn(nextState, replace) {
+  if (!isLoggedIn())
     replace('/sign_in')
 }
 
@@ -50,6 +56,15 @@ export default (
       getComponent={(nextState, cb) => {
         require.ensure([], require => {
           cb(null, require('./modules/User/pages/SignInPage/SignInPage').default);
+        });
+      }}
+    />
+    <Route
+      path="/user_profile"
+      onEnter={requireLoggedIn}
+      getComponent={(nextState, cb) => {
+        require.ensure([], require => {
+          cb(null, require('./modules/User/pages/UserProfilePage/UserProfilePage').default);
         });
       }}
     />

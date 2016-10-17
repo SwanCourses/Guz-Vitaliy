@@ -15,6 +15,15 @@ export function addUserRequest(user) {
   };
 }
 
+export function updateUserRequest(user) {
+  return (dispatch) => {
+    return callApi('users/update', 'post', { user }).then(res => {
+      localStorage.setItem('is_admin', res.admin);
+      browserHistory.push('/');
+    });
+  };
+}
+
 export function signInRequest(creds) {
   return (dispatch) => {
     return callApi('auth', 'post', creds).then(res => {
@@ -24,3 +33,15 @@ export function signInRequest(creds) {
     });
   };
 }
+
+export function getUserInfo(component) {
+  return (dispatch) => {
+    return callApi(`tokenInfo?access_token=${localStorage.authentication_token}`).then(res => {
+      component.setState({email: res.email});
+      component.setState({isAdmin: res.isAdmin});
+    });
+  };
+}
+
+
+

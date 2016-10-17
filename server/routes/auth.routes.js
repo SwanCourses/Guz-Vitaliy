@@ -6,5 +6,6 @@ import * as AuthController from '../controllers/auth.controller';
 
 export default function (router, protectedMiddleware) {
   router.post('/auth', AuthController.signIn);
+  router.get('/tokenInfo', AuthController.tokenInfo);
   return router;
 };

@@ -26,7 +26,7 @@ export class Header extends Component {
 
     return (
       <div className={styles.header}>
-        <Link to="/products">Products</Link>
+        <Link to="/user_profile">Profile</Link>
         <div className={styles['language-switcher']}>
           <ul>
             <li><FormattedMessage id="switchLanguage"/></li>

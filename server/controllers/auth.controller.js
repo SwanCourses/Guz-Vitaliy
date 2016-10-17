@@ -30,3 +30,23 @@ export function signIn(req, res) {
       });
   }
 }
+
+export function tokenInfo(req, res) {
+  if (!req.query.access_token) {
+    console.log(req.query)
+    res.status(404).end();
+  } else {
+    let userCuid = jwt.decode(req.query.access_token, serverConfig.JWT_TOKEN).sub;
+    User.findOne({cuid: userCuid})
+      .then((user) => {
+        if (!user) {
+          res.status(400).end();
+        } else {
+            res.json({email: user.email, isAdmin: user.isAdmin});
+        }
+      })
+      .catch(err => {
+        res.status(500).send(err);
+      });
+  }
+}
