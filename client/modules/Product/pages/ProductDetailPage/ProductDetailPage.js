@@ -10,6 +10,7 @@ import Helmet from 'react-helmet';
 import {FormattedMessage} from 'react-intl';
 import styles from './ProductDetailPage.css';
 import {addToCart} from '../../../Cart/CartActions'
+import {isAdmin} from '../../../../util/apiCaller';
 
 // Import Selectors
 import {getProduct} from '../../ProductReducer';
@@ -92,7 +93,7 @@ export class ProductDetailPage extends Component {
                 <option key={size} value={size}>{size}</option>
               )}
             </select>
-            <Link to={`/products/${this.props.product.cuid}/edit`}><FormattedMessage id="edit"/></Link>
+            {isAdmin() && <Link to={`/products/${this.props.product.cuid}/edit`}><FormattedMessage id="edit"/></Link>}
             <div onClick={this.addProductToCart}>
               <FormattedMessage id="order"/>
             </div>

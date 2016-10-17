@@ -2,36 +2,44 @@
  * Created by administrator on 26.09.16.
  */
 
-import { Router } from 'express';
+import {Router} from 'express';
 import * as ProductController from '../controllers/product.controller';
 import multer from 'multer';
 import path from 'path';
 import crypto from 'crypto';
 import serverConfig from '../config';
-import { createDir } from  '../util/fs-helpers';
+import {createDir} from  '../util/fs-helpers';
 
-const router = new Router();
-
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const productUploadsPath = path.resolve(__dirname, `../../${serverConfig.UPLOADS_DIR}/products/`);
-    const thisProductUploadsPath = productUploadsPath + `/art_${req.body.product.code || 'unknown'}/`
-    createDir(productUploadsPath);
-    createDir(thisProductUploadsPath);
-    cb(null, thisProductUploadsPath)
-  },
-  filename: function (req, file, cb) {
-    crypto.pseudoRandomBytes(16, function (err, raw) {
-      if (err) return cb(err);
-      cb(null, raw.toString('hex') + path.extname(file.originalname))
-    })
+const shouldBeAdmin = (req, res, next) => {
+  if (!req.user.isAdmin) {
+    res.status(403).end();
+  } else {
+    next()
   }
-});
+}
 
-var upload = multer({ storage: storage });
+export default function (router, protectedMiddleware) {
 
-router.route('/products').get(ProductController.getProducts);
-router.post('/products', upload.any(), ProductController.addProduct);
-router.put('/products/:cuid', upload.any(), ProductController.updateProduct);
+  var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      const productUploadsPath = path.resolve(__dirname, `../../${serverConfig.UPLOADS_DIR}/products/`);
+      const thisProductUploadsPath = productUploadsPath + `/art_${req.body.product.code || 'unknown'}/`
+      createDir(productUploadsPath);
+      createDir(thisProductUploadsPath);
+      cb(null, thisProductUploadsPath)
+    },
+    filename: function (req, file, cb) {
+      crypto.pseudoRandomBytes(16, function (err, raw) {
+        if (err) return cb(err);
+        cb(null, raw.toString('hex') + path.extname(file.originalname))
+      })
+    }
+  });
 
-export default router;
+  var upload = multer({storage: storage});
+
+  router.get('/products', ProductController.getProducts);
+  router.post('/products', upload.any(), ProductController.addProduct);
+  router.put('/products/:cuid', upload.any(), ProductController.updateProduct);
+  return router;
+}

@@ -22,6 +22,10 @@ export default {
     edit: 'Edit',
     cart: 'Cart',
     order: 'Order',
+    loginForm: 'sign in',
+    registrationForm: 'sign up',
+    userLogin: 'email',
+    userPassword: 'password',
     comment: `user {name} {value, plural,
     	  =0 {does not have any comments}
     	  =1 {has # comment}
